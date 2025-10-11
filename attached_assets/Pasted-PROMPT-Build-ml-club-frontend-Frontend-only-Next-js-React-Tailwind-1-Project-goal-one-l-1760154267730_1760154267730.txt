@@ -1,0 +1,310 @@
+PROMPT — Build ml-club-frontend (Frontend-only — Next.js + React + Tailwind)
+1 — Project goal (one-line)
+
+Build a clean, minimal, production-ready frontend (React + Next.js + Tailwind CSS) for the club’s “Python for Machine Learning” series so registered students can view resources, attempt daily quizzes/assignments, see a live leaderboard, and track progress. Only the frontend must be implemented — no backend code. Where backend behavior is needed, implement API integration stubs and mocked data.
+
+2 — High-level constraints (must follow)
+
+Frontend tech: Next.js + React (latest stable) + Tailwind CSS only. No other UI framework. Keep complexity low.
+
+Language: JavaScript (not TypeScript) unless requested otherwise.
+
+Use functional components and React hooks.
+
+Pages must be server-side rendered (SSR) only where beneficial — use Next.js pages routing (/src/pages or /pages) with _app.jsx.
+
+No backend implementation — use fetch/axios stubs and clear API contract (see section 7). Provide a mocked API layer (local JSON mocks or MSW) to simulate backend responses.
+
+Deliverable: a Git repo (link or zipped) with clear README and run instructions.
+
+3 — Project structure (exact)
+ml-club-frontend/
+├── package.json
+├── postcss.config.js
+├── tailwind.config.js
+├── README.md
+├── public/
+│   └── logo.png
+└── src/
+    ├── index.css
+    ├── assets/
+    │   └── (images/logos)
+    ├── components/
+    │   ├── Navbar.jsx
+    │   ├── Footer.jsx
+    │   ├── LeaderboardCard.jsx
+    │   ├── AssignmentCard.jsx
+    │   ├── QuizQuestion.jsx
+    │   └── ResourceCard.jsx
+    ├── context/
+    │   └── AuthContext.jsx
+    ├── lib/
+    │   ├── api.js          # fetch wrapper + mock toggle
+    │   └── mock-data.js    # all mock payloads
+    └── pages/
+        ├── _app.jsx
+        ├── index.jsx         # Dashboard
+        ├── login.jsx
+        ├── signup.jsx
+        ├── resources.jsx
+        ├── assignments.jsx
+        ├── quizzes/[id].jsx  # quiz attempt page
+        └── leaderboard.jsx
+
+4 — Deliverables (what to hand over)
+
+Complete Next.js + Tailwind project with above structure.
+
+Local mocks for all endpoints (in src/lib/mock-data.js and optionally MSW).
+
+Clear README with run/build instructions: npm install, npm run dev, npm run build, npm start.
+
+A short API_CONTRACT.md describing all endpoints used and sample responses.
+
+A list of environment variables used (e.g., NEXT_PUBLIC_API_BASE_URL) — do not include secrets.
+
+Optional: one deployment config (Vercel recommended) and a vercel.json or simple Dockerfile.
+
+5 — UX & behavior requirements (page-by-page)
+Global
+
+Responsive (mobile-first). Breakpoints: mobile / tablet / desktop.
+
+Accessible (basic a11y): semantic HTML, alt for images, keyboard focus states, visible labels, color contrast.
+
+Use a consistent spacing and typography system (Tailwind utility classes).
+
+Use AuthContext for auth state; store demo user in localStorage for mock flows.
+
+Navbar (component)
+
+Shows app name/logo left.
+
+Nav links: Resources, Assignments, Leaderboard.
+
+Right side: Login button when unauthenticated, or username + Logout when authenticated.
+
+On mobile use a simple hamburger that toggles a vertically stacked menu.
+
+Footer (component)
+
+Small centered copyright text and current year.
+
+Dashboard (/ / index.jsx)
+
+Welcome header, short subtext.
+
+3 tiles linking to Resources, Assignments, Leaderboard.
+
+Show a small progress summary (progress percentage) if user logged in (read from mock user.progress).
+
+Login (/login.jsx) & Signup (/signup.jsx)
+
+Simple forms with Name, Email, Roll Number (signup) and Login with Email (or name for demo).
+
+Mock login() should save a user object into localStorage and AuthContext. Redirect to / after login.
+
+Show client-side validation and friendly errors.
+
+Resources (/resources.jsx)
+
+Show list of resources grouped by session (session title + date).
+
+Resource types: PPT/Notes (download link), Video (embedded player or link).
+
+Use ResourceCard component with Open and Download actions. Use signed-URL simulation for downloads.
+
+Assignments (/assignments.jsx)
+
+List of items (Daily Quizzes + Coding Assignments). Use AssignmentCard component.
+
+Each assignment shows title, due date, status (pending/submitted/graded), and CTA (Attempt / Submit / View Result).
+
+Clicking a quiz opens /quizzes/[id].jsx.
+
+Quiz attempt page (/quizzes/[id].jsx)
+
+Display quiz title, timer (if timed), questions one by one, ability to navigate back/next, save answers locally (auto-save every 10s).
+
+Support MCQ single-select and short-text answers. On submit, call API stub to get auto-graded result. Show immediate feedback and final score.
+
+After submission, update leaderboard/mock user progress.
+
+Leaderboard (/leaderboard.jsx)
+
+Ranked list of users (rank, avatar/initials, name, score).
+
+Show filters: session / overall / period (last 7 days). Mock filter behavior.
+
+Use LeaderboardCard component.
+
+6 — Components (behavior expectations)
+
+Navbar.jsx, Footer.jsx, LeaderboardCard.jsx, AssignmentCard.jsx, ResourceCard.jsx, QuizQuestion.jsx.
+
+Components accept clear props, use Tailwind classes, responsive layout.
+
+Keep components small and reusable.
+
+7 — API contract & mock payloads (frontend integration)
+
+Implement src/lib/api.js which exports functions used by pages. It should support a USE_MOCK toggle (true by default). When USE_MOCK is true, it returns data from mock-data.js. When false, it performs fetches against process.env.NEXT_PUBLIC_API_BASE_URL (but agent does not implement backend).
+
+Endpoints (frontend expectations)
+
+GET /api/sessions
+Response:
+
+[{ "id": 1, "title": "Session 1: Intro", "date": "2025-10-01", "resources": [/*resource ids*/] }]
+
+
+GET /api/resources?sessionId=ID
+Response:
+
+[{ "id": 101, "title": "Intro PPT", "type": "ppt", "url": "https://cdn/.../file.pptx" }]
+
+
+GET /api/assignments
+Response:
+
+[{ "id": 201, "title": "Daily Quiz 1", "type": "quiz", "due": "2025-10-10", "status": "pending" }]
+
+
+GET /api/quizzes/:id
+Response:
+
+{ "id": 301, "title": "Daily Quiz 1", "duration": 600, "questions": [{ "id": 1, "type": "mcq", "question": "Q?", "choices": ["a", "b"], "points": 10 }] }
+
+
+POST /api/quizzes/:id/submit (body: { userId, answers })
+Response:
+
+{ "score": 85, "maxScore": 100, "breakdown": [{ "questionId":1, "correct": true, "awarded": 10 }] }
+
+
+GET /api/leaderboard?sessionId=&period=
+Response:
+
+[{ "rank":1, "userId":10, "name":"Alice", "score":980 }]
+
+
+POST /api/auth/login (for non-mock mode) — agent should simulate but not require.
+
+Mock data file
+
+Provide one mock-data.js object with arrays: users, sessions, resources, assignments, quizzes, leaderboard. Include sample shapes as above. The agent must wire components to this mock data.
+
+8 — State management & auth
+
+Use AuthContext.jsx to provide user, login(payload), logout().
+
+Store user in localStorage for demo persistence. Keep auth implementation simple and replaceable with real API later.
+
+9 — Error handling & loading states
+
+Every async action must show a loading state (spinner or skeleton) and friendly error messages.
+
+On API failure (in non-mock mode), show a retry option.
+
+10 — Visual design & branding
+
+Minimal, clean, neutral palette. Use Tailwind defaults; a single accent color (e.g., blue-600).
+
+Use simple icons (SVGs or Heroicons) where needed.
+
+Keep spacing consistent and readable on mobile.
+
+11 — Testing expectations
+
+Manual QA checklist (required): form validation, navigation, mobile responsiveness, quiz submit flow, leaderboard update from mocks.
+
+Include at least 3 basic automated tests (Jest + React Testing Library) for: Navbar renders & auth toggle, Resources page shows cards, Quiz page submits and shows result (mocked). (Optional but preferred.)
+
+12 — Performance & accessibility
+
+Images optimized (use public/ placeholders).
+
+Use Next.js <Image> component where appropriate.
+
+Lighthouse: target > 80 performance/accessibility on desktop for MVP.
+
+13 — Deployment & CI
+
+Provide a simple Vercel deployment recipe (recommended) or Dockerfile.
+
+Provide npm run build and npm start consistency.
+
+Add lint script (eslint recommended) and run in CI (simple GitHub Actions workflow optional).
+
+14 — Milestones / timeline (suggested)
+
+Day 0 (planning): Confirm structure, mock data, and API contract.
+
+Day 1: Scaffold Next.js + Tailwind + AuthContext + Navbar/Footer + global styles.
+
+Day 2: Resources page + mocks; Dashboard and static tiles.
+
+Day 3: Assignments list + AssignmentCard; Leaderboard page.
+
+Day 4: Quiz attempt page (core behavior), auto-save, submission flow (mock).
+
+Day 5: Polish, responsive fixes, accessibility checks, README, deliverable package.
+(Adjust per resource/time — this is for a single frontend developer.)
+
+15 — Acceptance criteria (must pass)
+
+Project runs locally with npm install + npm run dev.
+
+Login/Signup demo works and persists user to localStorage; logout clears it.
+
+Resources page lists items and their Open/Download CTAs (download uses mock signed URL).
+
+Assignments list loads; clicking a quiz opens the quiz page.
+
+Quiz supports at least MCQ; submit returns and displays a mock score.
+
+Leaderboard displays mock ranked users and filters operate (client-side).
+
+All pages are responsive and accessible (keyboard navigation possible).
+
+README contains run instructions and an API_CONTRACT.md.
+
+16 — Code quality & repo standards
+
+Use meaningful commit messages and create a dev branch for work. Feature branches should be feature/<short-descriptor>.
+
+Each PR must include a short description and list of files changed.
+
+Keep components small and files organized. Add comments where logic is non-trivial.
+
+No secrets or real API keys committed.
+
+17 — Handover artifacts & final checklist (deliver with PR)
+
+Working repository (zip or link).
+
+README with run/build instructions and notes about how to switch from mocks to real API.
+
+API_CONTRACT.md with endpoint list and sample payloads.
+
+mock-data.js file with at least 10 sample users and a few sessions/quizzes.
+
+Simple QA checklist with test results.
+
+If possible, a short 2–3 min recorded demo (optional) showing flows.
+
+Optional (nice-to-have, only if time permits)
+
+Use MSW (Mock Service Worker) for network-level mocking.
+
+Add simple charts on Dashboard (progress trend) using a light-weight approach (no heavy chart libs).
+
+Add tests (Cypress) for end-to-end flows.
+
+Communication to the agent (how to report progress)
+
+Update the ticket with a link to the repo after scaffolding is complete.
+
+Provide one PR per major feature (resources, assignments, quizzes, leaderboard).
+
+Tag reviewer for final acceptance. Include screenshots of mobile/desktop states.
