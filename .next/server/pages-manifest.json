@@ -4,6 +4,6 @@
   "/_document": "pages/_document.js",
   "/resources": "pages/resources.js",
   "/": "pages/index.js",
-  "/leaderboard": "pages/leaderboard.js",
+  "/signup": "pages/signup.js",
   "/login": "pages/login.js"
 }

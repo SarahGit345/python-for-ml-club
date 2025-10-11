@@ -107,15 +107,12 @@ export async function getLeaderboard(sessionId, period) {
   return response.json();
 }
 
-export async function login(email, name) {
+export async function login(email, password) {
   if (USE_MOCK) {
     await delay(400);
-    let user = mockUsers.find(u => u.email === email);
-    if (!user && name) {
-      user = mockUsers.find(u => u.name === name);
-    }
+    const user = mockUsers.find(u => u.email === email && u.password === password);
     if (!user) {
-      user = mockUsers[0];
+      throw new Error('Invalid credentials');
     }
     const progress = mockUserProgress[user.id] || { 
       userId: user.id, 
@@ -124,20 +121,25 @@ export async function login(email, name) {
       score: 0, 
       progress: 0 
     };
-    return { ...user, progress };
+    const { password: _, ...userWithoutPassword } = user;
+    return { ...userWithoutPassword, progress };
   }
   
   const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, name })
+    body: JSON.stringify({ email, password })
   });
   return response.json();
 }
 
-export async function signup(name, email, rollNumber) {
+export async function signup(name, email, rollNumber, password) {
   if (USE_MOCK) {
     await delay(400);
+    const existingUser = mockUsers.find(u => u.email === email);
+    if (existingUser) {
+      throw new Error('Email already exists');
+    }
     const newUser = {
       id: mockUsers.length + 1,
       name,
@@ -158,7 +160,7 @@ export async function signup(name, email, rollNumber) {
   const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, rollNumber })
+    body: JSON.stringify({ name, email, rollNumber, password })
   });
   return response.json();
 }

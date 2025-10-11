@@ -1,16 +1,16 @@
 export const mockUsers = [
-  { id: 1, name: "Alice Kumar", email: "alice@example.com", rollNumber: "CS001", score: 980, avatar: "AK" },
-  { id: 2, name: "Bob Singh", email: "bob@example.com", rollNumber: "CS002", score: 950, avatar: "BS" },
-  { id: 3, name: "Charlie Patel", email: "charlie@example.com", rollNumber: "CS003", score: 920, avatar: "CP" },
-  { id: 4, name: "Diana Shah", email: "diana@example.com", rollNumber: "CS004", score: 890, avatar: "DS" },
-  { id: 5, name: "Ethan Verma", email: "ethan@example.com", rollNumber: "CS005", score: 860, avatar: "EV" },
-  { id: 6, name: "Fiona Desai", email: "fiona@example.com", rollNumber: "CS006", score: 830, avatar: "FD" },
-  { id: 7, name: "George Reddy", email: "george@example.com", rollNumber: "CS007", score: 800, avatar: "GR" },
-  { id: 8, name: "Hannah Iyer", email: "hannah@example.com", rollNumber: "CS008", score: 770, avatar: "HI" },
-  { id: 9, name: "Ian Chopra", email: "ian@example.com", rollNumber: "CS009", score: 740, avatar: "IC" },
-  { id: 10, name: "Julia Nair", email: "julia@example.com", rollNumber: "CS010", score: 710, avatar: "JN" },
-  { id: 11, name: "Kevin Joshi", email: "kevin@example.com", rollNumber: "CS011", score: 680, avatar: "KJ" },
-  { id: 12, name: "Lara Gupta", email: "lara@example.com", rollNumber: "CS012", score: 650, avatar: "LG" },
+  { id: 1, name: "Alice Kumar", email: "alice@example.com", password: "password123", rollNumber: "CS001", score: 980, avatar: "AK" },
+  { id: 2, name: "Bob Singh", email: "bob@example.com", password: "password123", rollNumber: "CS002", score: 950, avatar: "BS" },
+  { id: 3, name: "Charlie Patel", email: "charlie@example.com", password: "password123", rollNumber: "CS003", score: 920, avatar: "CP" },
+  { id: 4, name: "Diana Shah", email: "diana@example.com", password: "password123", rollNumber: "CS004", score: 890, avatar: "DS" },
+  { id: 5, name: "Ethan Verma", email: "ethan@example.com", password: "password123", rollNumber: "CS005", score: 860, avatar: "EV" },
+  { id: 6, name: "Fiona Desai", email: "fiona@example.com", password: "password123", rollNumber: "CS006", score: 830, avatar: "FD" },
+  { id: 7, name: "George Reddy", email: "george@example.com", password: "password123", rollNumber: "CS007", score: 800, avatar: "GR" },
+  { id: 8, name: "Hannah Iyer", email: "hannah@example.com", password: "password123", rollNumber: "CS008", score: 770, avatar: "HI" },
+  { id: 9, name: "Ian Chopra", email: "ian@example.com", password: "password123", rollNumber: "CS009", score: 740, avatar: "IC" },
+  { id: 10, name: "Julia Nair", email: "julia@example.com", password: "password123", rollNumber: "CS010", score: 710, avatar: "JN" },
+  { id: 11, name: "Kevin Joshi", email: "kevin@example.com", password: "password123", rollNumber: "CS011", score: 680, avatar: "KJ" },
+  { id: 12, name: "Lara Gupta", email: "lara@example.com", password: "password123", rollNumber: "CS012", score: 650, avatar: "LG" },
 ];
 
 export const mockSessions = [

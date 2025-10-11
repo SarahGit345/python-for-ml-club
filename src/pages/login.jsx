@@ -6,6 +6,7 @@ import { login as apiLogin } from '../lib/api';
 
 export default function Login() {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { login } = useAuth();
@@ -25,13 +26,23 @@ export default function Login() {
       return;
     }
 
+    if (!password) {
+      setError('Please enter your password');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
     setLoading(true);
     try {
-      const userData = await apiLogin(email);
+      const userData = await apiLogin(email, password);
       login(userData);
       router.push('/');
     } catch (err) {
-      setError('Login failed. Please try again.');
+      setError('Invalid email or password. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -62,6 +73,21 @@ export default function Login() {
               />
             </div>
 
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-misc-blue focus:border-misc-blue"
+                placeholder="Enter your password"
+                disabled={loading}
+              />
+            </div>
+
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
                 {error}
@@ -88,7 +114,7 @@ export default function Login() {
 
           <div className="mt-4 p-3 bg-blue-50 rounded-lg">
             <p className="text-xs text-gray-600 text-center">
-              Demo: Use any email from the mock data (e.g., alice@example.com)
+              Demo: alice@example.com / password: password123
             </p>
           </div>
         </div>
