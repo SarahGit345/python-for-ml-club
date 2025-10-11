@@ -27,8 +27,10 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('misc_user', JSON.stringify(userData));
+    // ensure joinedSessions exists for tracking live sessions
+    const normalized = { ...userData, joinedSessions: userData.joinedSessions || [] };
+    setUser(normalized);
+    localStorage.setItem('misc_user', JSON.stringify(normalized));
   };
 
   const logout = () => {
@@ -36,10 +38,21 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('misc_user');
   };
 
+  const updateUser = (patch) => {
+    setUser((prev) => {
+      const updated = { ...(prev || {}), ...patch };
+      try {
+        localStorage.setItem('misc_user', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+  };
+
   const value = {
     user,
     login,
     logout,
+    updateUser,
     isAuthenticated: !!user,
     loading
   };

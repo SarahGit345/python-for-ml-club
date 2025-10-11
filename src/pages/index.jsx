@@ -1,6 +1,8 @@
 import { useAuth } from '../context/AuthContext';
 import Link from 'next/link';
 import { AcademicCapIcon, ClipboardDocumentListIcon, TrophyIcon } from '@heroicons/react/24/outline';
+import PythonGraphic from '../components/PythonGraphic';
+import MLGraphic from '../components/MLGraphic';
 
 export default function Dashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -27,7 +29,18 @@ export default function Dashboard() {
       href: '/leaderboard',
       color: 'bg-purple-500'
     }
+    ,
+    {
+      title: 'Join Live Session',
+      description: 'Join scheduled live classes and review recordings',
+      icon: ClipboardDocumentListIcon,
+      href: '/live',
+      color: 'bg-yellow-500'
+    }
   ];
+
+  const joinTile = tiles[3];
+  const JoinIcon = joinTile?.icon || null;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -65,20 +78,53 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {tiles.map((tile) => (
-          <Link
-            key={tile.title}
-            href={tile.href}
-            className="group bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-          >
-            <div className={`${tile.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-              <tile.icon className="h-6 w-6 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">{tile.title}</h3>
-            <p className="text-gray-600">{tile.description}</p>
-          </Link>
+      {/* First row: main tiles */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+        {tiles.slice(0, 3).map((tile) => (
+          <div key={tile.title}>
+            <Link
+              href={tile.href}
+              className="group block w-full h-full bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+            >
+              <div className={`${tile.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                <tile.icon className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">{tile.title}</h3>
+              <p className="text-gray-600">{tile.description}</p>
+            </Link>
+          </div>
         ))}
+      </div>
+
+      {/* Second row: left graphic, Join card centered, right graphic */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+        <div className="flex justify-center md:justify-end">
+          <div className="hidden md:block">
+            <PythonGraphic />
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          {/* Join card placed exactly in middle column and full width of that column */}
+          {joinTile && (
+            <Link
+              href={joinTile.href}
+              className="group block w-full bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+            >
+              <div className={`${joinTile.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                {JoinIcon ? <JoinIcon className="h-6 w-6 text-white" /> : null}
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">{joinTile.title}</h3>
+              <p className="text-gray-600">{joinTile.description}</p>
+            </Link>
+          )}
+        </div>
+
+        <div className="flex justify-center md:justify-start">
+          <div className="hidden md:block">
+            <MLGraphic />
+          </div>
+        </div>
       </div>
 
       {!isAuthenticated && (

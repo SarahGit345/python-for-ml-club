@@ -10,6 +10,7 @@ export default function Navbar() {
 
   const navLinks = [
     { href: '/resources', label: 'Resources' },
+    { href: '/live', label: 'Live' },
     { href: '/assignments', label: 'Assignments' },
     { href: '/leaderboard', label: 'Leaderboard' },
   ];
@@ -30,11 +31,12 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-gray-700 hover:text-misc-blue transition-colors"
+                className={`text-gray-700 hover:text-misc-blue transition-colors ${link.href === '/live' ? 'font-semibold' : ''}`}
               >
                 {link.label}
               </Link>
             ))}
+            {/* Profile removed per request */}
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-gray-700">Hi, {user?.name?.split(' ')[0]}</span>
