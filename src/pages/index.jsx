@@ -1,11 +1,34 @@
 import { useAuth } from '../context/AuthContext';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AcademicCapIcon, ClipboardDocumentListIcon, TrophyIcon } from '@heroicons/react/24/outline';
 import PythonGraphic from '../components/PythonGraphic';
 import MLGraphic from '../components/MLGraphic';
+import { mockSessions } from '../lib/mock-data';
+import { isSessionLive, isUpcomingSession, formatSessionTime } from '../lib/session-utils';
 
 export default function Dashboard() {
   const { user, isAuthenticated } = useAuth();
+  const [hasLiveSession, setHasLiveSession] = useState(false);
+  const [nextSession, setNextSession] = useState(null);
+
+  useEffect(() => {
+    const checkSessions = () => {
+      const hasLive = mockSessions.some(session => isSessionLive(session));
+      setHasLiveSession(hasLive);
+
+      // Find next session
+      const upcomingSession = mockSessions.find(session => isUpcomingSession(session));
+      setNextSession(upcomingSession);
+    };
+
+    // Check initially
+    checkSessions();
+
+    // Check every minute
+    const interval = setInterval(checkSessions, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   const tiles = [
     {
@@ -31,11 +54,14 @@ export default function Dashboard() {
     }
     ,
     {
-      title: 'Join Live Session',
-      description: 'Join scheduled live classes and review recordings',
+      title: hasLiveSession ? 'Join Live Session Now!' : 'Join Live Session',
+      description: nextSession 
+        ? `Next session on ${new Date(nextSession.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} at ${formatSessionTime(nextSession)}`
+        : 'Check schedule for upcoming sessions',
       icon: ClipboardDocumentListIcon,
       href: '/live',
-      color: 'bg-yellow-500'
+      color: 'bg-yellow-500',
+      className: hasLiveSession ? 'live-blink' : ''
     }
   ];
 
@@ -84,7 +110,7 @@ export default function Dashboard() {
           <div key={tile.title}>
             <Link
               href={tile.href}
-              className="group block w-full h-full bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+              className={`group block w-full h-full bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${tile.className || ''}`}
             >
               <div className={`${tile.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                 <tile.icon className="h-6 w-6 text-white" />

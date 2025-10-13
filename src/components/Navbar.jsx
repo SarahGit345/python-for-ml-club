@@ -1,16 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '../context/AuthContext';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { mockSessions } from '../lib/mock-data';
+import { isSessionLive, isUpcomingSession } from '../lib/session-utils';
 
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [hasLiveSession, setHasLiveSession] = useState(false);
+
+  useEffect(() => {
+    const checkLiveSessions = () => {
+      const hasLive = mockSessions.some(session => isSessionLive(session));
+      setHasLiveSession(hasLive);
+    };
+
+    // Check initially
+    checkLiveSessions();
+
+    // Check every minute
+    const interval = setInterval(checkLiveSessions, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   const navLinks = [
     { href: '/resources', label: 'Resources' },
-    { href: '/live', label: 'Live' },
+    { 
+      href: '/live', 
+      label: 'Live',
+      extra: hasLiveSession ? <span className="live-indicator live-blink ml-2">LIVE</span> : null
+    },
     { href: '/assignments', label: 'Assignments' },
     { href: '/leaderboard', label: 'Leaderboard' },
   ];
@@ -31,9 +52,10 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-gray-700 hover:text-misc-blue transition-colors ${link.href === '/live' ? 'font-semibold' : ''}`}
+                className={`text-gray-700 hover:text-misc-blue transition-colors ${link.href === '/live' ? 'font-semibold' : ''} flex items-center`}
               >
                 {link.label}
+                {link.extra}
               </Link>
             ))}
             {/* Profile removed per request */}

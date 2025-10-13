@@ -9,3 +9,19 @@ body {
 * {
   box-sizing: border-box;
 }
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+.live-blink {
+  animation: blink 2s infinite;
+}
+
+.live-indicator {
+  @apply inline-flex items-center;
+  @apply bg-red-500 text-white;
+  @apply rounded-full px-2 py-0.5 text-xs font-medium;
+}

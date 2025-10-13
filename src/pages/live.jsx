@@ -1,5 +1,5 @@
 import { useAuth } from '../context/AuthContext';
-import { mockSessions } from '../lib/mock-data';
+import { mockSessions, liveSessionConfig } from '../lib/mock-data';
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -12,6 +12,11 @@ export default function LivePage() {
   const joinSession = (id) => {
     if (!isAuthenticated) return;
     if (joined.has(id)) return;
+    
+    // Open MS Teams link in a new tab
+    window.open(liveSessionConfig.teamsUrl, '_blank');
+    
+    // Update user's joined sessions
     setJoining(id);
     const updated = [...joined, id];
     updateUser({ joinedSessions: updated });

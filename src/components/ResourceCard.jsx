@@ -1,10 +1,8 @@
-import { DocumentArrowDownIcon, PlayCircleIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
+import { DocumentArrowDownIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
 
 export default function ResourceCard({ resource }) {
   const getIcon = () => {
     switch (resource.type) {
-      case 'video':
-        return <PlayCircleIcon className="h-6 w-6" />;
       case 'ppt':
         return <DocumentTextIcon className="h-6 w-6" />;
       case 'pdf':
@@ -15,11 +13,7 @@ export default function ResourceCard({ resource }) {
   };
 
   const handleAction = () => {
-    if (resource.type === 'video') {
-      window.open(resource.url, '_blank');
-    } else {
-      window.open(resource.url, '_blank');
-    }
+    window.open(resource.url, '_blank');
   };
 
   return (
@@ -33,23 +27,13 @@ export default function ResourceCard({ resource }) {
           </div>
         </div>
         <div className="flex space-x-2">
-          {resource.type === 'video' ? (
-            <button
-              onClick={handleAction}
-              className="bg-misc-blue text-white px-3 py-1.5 rounded text-sm hover:bg-blue-600 transition-colors"
-              aria-label={`Open ${resource.title}`}
-            >
-              Watch
-            </button>
-          ) : (
-            <button
-              onClick={handleAction}
-              className="bg-misc-blue text-white px-3 py-1.5 rounded text-sm hover:bg-blue-600 transition-colors"
-              aria-label={`Download ${resource.title}`}
-            >
-              Download
-            </button>
-          )}
+          <button
+            onClick={handleAction}
+            className="bg-misc-blue text-white px-3 py-1.5 rounded text-sm hover:bg-blue-600 transition-colors"
+            aria-label={`Download ${resource.title}`}
+          >
+            Download
+          </button>
         </div>
       </div>
     </div>

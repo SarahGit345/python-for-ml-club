@@ -1,3 +1,8 @@
+// Configuration for live sessions
+export const liveSessionConfig = {
+  teamsUrl: "https://teams.live.com/l/community/FEA4S7YTtYiGKw6DgI"
+};
+
 export const mockUsers = [
   { id: 1, name: "Alice Kumar", email: "alice@example.com", password: "password123", rollNumber: "CS001", score: 980, avatar: "AK" },
   { id: 2, name: "Bob Singh", email: "bob@example.com", password: "password123", rollNumber: "CS002", score: 950, avatar: "BS" },
@@ -17,25 +22,33 @@ export const mockSessions = [
   {
     id: 1,
     title: "Session 1: Introduction to Python & ML Basics",
-    date: "2025-10-01",
+    date: "2025-10-14",
+    startTime: "13:30",
+    endTime: "16:30",
     resources: [101, 102, 103]
   },
   {
     id: 2,
     title: "Session 2: NumPy & Data Manipulation",
-    date: "2025-10-08",
+    date: "2025-10-15",
+    startTime: "15:30",
+    endTime: "16:30",
     resources: [104, 105, 106]
   },
   {
     id: 3,
     title: "Session 3: Pandas for Data Analysis",
-    date: "2025-10-15",
+    date: "2025-10-16",
+    startTime: "15:30",
+    endTime: "16:30",
     resources: [107, 108, 109]
   },
   {
     id: 4,
     title: "Session 4: Data Visualization with Matplotlib",
-    date: "2025-10-22",
+    date: "2025-10-17",
+    startTime: "15:30",
+    endTime: "16:30",
     resources: [110, 111, 112]
   },
 ];
@@ -43,16 +56,12 @@ export const mockSessions = [
 export const mockResources = [
   { id: 101, sessionId: 1, title: "Introduction to Python - Slides", type: "ppt", url: "https://example.com/intro-python.pptx" },
   { id: 102, sessionId: 1, title: "ML Basics - Notes", type: "pdf", url: "https://example.com/ml-basics.pdf" },
-  { id: 103, sessionId: 1, title: "Session 1 Recording", type: "video", url: "https://www.youtube.com/watch?v=example1" },
   { id: 104, sessionId: 2, title: "NumPy Tutorial - Slides", type: "ppt", url: "https://example.com/numpy-tutorial.pptx" },
   { id: 105, sessionId: 2, title: "NumPy Cheat Sheet", type: "pdf", url: "https://example.com/numpy-cheat.pdf" },
-  { id: 106, sessionId: 2, title: "Session 2 Recording", type: "video", url: "https://www.youtube.com/watch?v=example2" },
   { id: 107, sessionId: 3, title: "Pandas Basics - Slides", type: "ppt", url: "https://example.com/pandas-basics.pptx" },
   { id: 108, sessionId: 3, title: "Pandas Practice Dataset", type: "pdf", url: "https://example.com/pandas-data.csv" },
-  { id: 109, sessionId: 3, title: "Session 3 Recording", type: "video", url: "https://www.youtube.com/watch?v=example3" },
   { id: 110, sessionId: 4, title: "Matplotlib Tutorial - Slides", type: "ppt", url: "https://example.com/matplotlib.pptx" },
   { id: 111, sessionId: 4, title: "Visualization Examples", type: "pdf", url: "https://example.com/viz-examples.pdf" },
-  { id: 112, sessionId: 4, title: "Session 4 Recording", type: "video", url: "https://www.youtube.com/watch?v=example4" },
 ];
 
 export const mockAssignments = [
