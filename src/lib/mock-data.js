@@ -1,6 +1,6 @@
 // Configuration for live sessions
 export const liveSessionConfig = {
-  teamsUrl: "https://teams.live.com/l/community/FEA4S7YTtYiGKw6DgI"
+  teamsUrl: "https://teams.microsoft.com/l/meetup-join/19%3ameeting_MjU2MTA4OWYtM2ExZS00NmZjLTkxNjQtZmQ1ZGVkNDVjNDky%40thread.v2/0?context=%7b%22Tid%22%3a%22ebbbcd62-c0a9-46ff-a92c-5f2300087164%22%2c%22Oid%22%3a%22694c3e64-a2c7-40aa-811f-34a9075bc286%22%7d"
 };
 
 export const mockUsers = [
